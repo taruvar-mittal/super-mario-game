@@ -56,7 +56,8 @@ class Game {
                 let entities = {}
                 let gameObj = {
                     tool, canvas,
-                    entities
+                    entities,
+                    animFrame:0
                 }
                 tool.scale(2.5, 2.5);
                 let mario = new Mario(spriteSheetImage, 175, 0, 18, 18);
@@ -71,8 +72,10 @@ class Game {
         function gameloop() {
             
             input.update(gameObj);
+            animation.update(gameObj);
             physics.update(gameObj);
             render.update(gameObj)
+            gameObj.animFrame++;
             requestAnimationFrame(gameloop);
         }
         gameloop();
