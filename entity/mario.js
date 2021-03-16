@@ -3,7 +3,7 @@ class Mario extends Entity {
   constructor(spritesheet, posX, posY, width, height) {
     let img = new Sprite(spritesheet, 650, 3, 17, 19);
     super(img, "mario", posX, posY, width, height);
-    this.velX = 1.8;
+    this.velX = 2;
     this.velY = 0;
     let self = this;
     this.animFrame = {
@@ -15,6 +15,7 @@ class Mario extends Entity {
           new Sprite(spritesheet, 699, 5, 16, 16),
         ],
         counter:0
+       
       },
 
       walkLeft: {
@@ -31,7 +32,6 @@ class Mario extends Entity {
       jumpRight: new Sprite(spritesheet, 731, 5, 16, 16),
       jumpLeft: new Sprite(spritesheet, 778, 22, 16, 16),
     }
-
     this.states = {
       walkingAnim(gameObj) {
         

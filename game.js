@@ -1,9 +1,13 @@
+
 const render = {
     init(gameObj) {
+        
         gameObj.tool.fillStyle = "#3498db";
         gameObj.tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
+       
         let mario = gameObj.entities.mario;
         gameObj.levelBuilder.stock(gameObj);
+      
         gameObj.tool.drawImage(
             mario.sprite.img,
             mario.sprite.srcX,
@@ -17,22 +21,49 @@ const render = {
         )
     },
     update(gameObj) {
-        let mario = gameObj.entities.mario;
-        gameObj.tool.clearRect(0,0,window.innerWidth,window.innerHeight);
+        this.updateFrame(gameObj);
+        gameObj.tool.clearRect(0, 0, window.innerWidth, window.innerHeight);
         gameObj.tool.fillStyle = "#63adff";
         gameObj.tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
         gameObj.levelBuilder.render(gameObj);
-        gameObj.tool.drawImage(
-            mario.sprite.img,
-            mario.sprite.srcX,
-            mario.sprite.srcY,
-            mario.sprite.srcW,
-            mario.sprite.srcH,
-            mario.posX,
-            mario.posY,
-            mario.width,
-            mario.height
-        )
+        let mario = gameObj.entities.mario;
+        let camera = gameObj.camera
+        this.drawEntity(camera, mario, gameObj);
+        gameObj.entities.goombas.forEach((goomba) => {
+            this.drawEntity(camera, goomba, gameObj);
+
+        })
+
+
+    },
+
+    drawEntity(camera, entity, gameObj) {
+        let entityEnd = entity.posX + entity.width;
+        let frameWidth = camera.start + camera.width;
+        if (entity.posX >= camera.start && entityEnd <= frameWidth) {
+            gameObj.tool.drawImage(
+                entity.sprite.img
+                , entity.sprite.srcX
+                , entity.sprite.srcY,
+                entity.sprite.srcW,
+                entity.sprite.srcH,
+                entity.posX - camera.start,
+                entity.posY,
+                entity.width,
+                entity.height
+            )
+        }
+    },
+
+    updateFrame(gameObj) {
+        
+        let centerX = gameObj.entities.mario.posX +
+            gameObj.entities.mario.width / 2;
+        let dist = window.innerWidth / 8;
+        
+        if (centerX < gameObj.camera.start + (2 * dist)) {
+            gameObj.camera.start = Math.max(centerX - dist, 0);
+        }
     }
 }
 
@@ -45,27 +76,40 @@ class Game {
                 canvas.width = window.innerWidth;
                 const tool = canvas.getContext("2d");
                 let entities = {}
+                let camera = {
+                    start: 0,
+                    width: window.innerWidth
+                }
                 let gameObj = {
                     tool, canvas,
                     entities
-                    ,animFrame:0,
-                    levelBuilder:new LevelBuilder(levelOne),
+                    , animFrame: 0,
+                    levelBuilder: new LevelBuilder(levelOne),
+                    camera
+                    , reset: this.reset
 
                 }
                 tool.scale(2.74, 2.74);
                 let mario = new Mario(spriteSheetImage, 175, 0, 18, 18);
                 gameObj.entities.mario = mario;
-                gameObj.entities.scenery=[];
+                gameObj.entities.goombas = [];
+                levelOne.goombas.forEach((gCord) => {
+                    gameObj.entities.goombas.push(new Goomba(spriteSheetImage, gCord[0], gCord[1], gCord[2], gCord[3]));
+
+                })
+        
+                gameObj.entities.scenery = [];
                 render.init(gameObj);
                 input.init();
                 this.update(gameObj);
             })
     }
     update(gameObj) {
-      
+       
         function gameloop() {
             input.update(gameObj);
             animation.update(gameObj);
+            movement.update(gameObj);
             physics.update(gameObj);
             render.update(gameObj)
             gameObj.animFrame++;
@@ -76,6 +120,7 @@ class Game {
     reset() {
         location.reload();
     }
+
 }
 const game = new Game();
 game.init();

@@ -1,3 +1,4 @@
+
 class Sprite {
     constructor(img, srcX, srcY, srcW, srcH) {
       this.img = img;
@@ -7,11 +8,12 @@ class Sprite {
       this.srcH = srcH
     }
   }
-  
+
   class Entity {
     constructor(sprite, type, posX, posY, width, height) {
       this.sprite = sprite;
       this.type = type;
+  
       this.posX = posX;
       this.posY = posY;
       this.width = width;
