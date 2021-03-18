@@ -4,6 +4,9 @@ let physics = {
         gameObj.entities.goombas.forEach((goomba)=>{
             this.gravity(goomba);
         })
+        gameObj.entities.koopas.forEach((koopa)=>{
+            this.gravity(koopa);
+        })
         this.bgEntityCollision(gameObj);
         this.marioFallingCheck(gameObj);
     },
@@ -15,9 +18,13 @@ let physics = {
     bgEntityCollision(gameObj) {
         let mario = gameObj.entities.mario;
         let goombas = gameObj.entities.goombas;
+        let koopas = gameObj.entities.koopas;
         this.bgCollision(mario, gameObj);
         goombas.forEach((goomba) => {
             this.bgCollision(goomba, gameObj);
+        })
+        koopas.forEach((koopa) => {
+            this.bgCollision(koopa, gameObj);
         })
     },
     bgCollision(entity, gameObj) {
@@ -31,9 +38,6 @@ let physics = {
                         if (entity.type == "mario") {
 
                             entity.currentState = entity.states.standingAnim;
-                        } else if (entity.type == "goomba") {
-                            entity.currentState = entity.states.walkingAnim;
-
                         }
                         entity.posY = scene.posY - entity.height - 1;
                         entity.velY = 1.1;
@@ -42,9 +46,7 @@ let physics = {
             }
 
         })
-    }
-    ,
-
+    },
     checkRectCollision(scene, entity) {
         let l1 = scene.posX;
         let l2 = entity.posX;
@@ -61,21 +63,22 @@ let physics = {
     handleDirec(scene, entity) {
         if (entity.posX < scene.posX && entity.posY >= scene.posY) {
             entity.posX = scene.posX - entity.width;
-            if (entity.type == "goomba") {
+            if (entity.type == "goomba" || entity.type == "koopa") {
                 entity.currentDirection = entity.currentDirection == "left" ? "right" : "left";
             }
         }
         if (entity.posX > scene.posX && entity.posY >= scene.posY) {
             entity.posX = scene.posX + scene.width;
-            if (entity.type == "goomba") {
+            if (entity.type == "goomba" || entity.type == "koopa") {
                 entity.currentDirection = entity.currentDirection == "left" ? "right" : "left";
             }
         }
         if (entity.posY < scene.posY && entity.posX + entity.width > scene.posX && scene.posX + scene.posY > entity.posX && entity.velY >= 0) {
-            entity.currentState = entity.states.standingAnim;
+            if(entity.type == "mario"){
+                entity.currentState = entity.states.standingAnim;
+            }
             entity.posY = scene.posY - entity.height - 1;
             entity.velY = 0;
-
         }
     },
 

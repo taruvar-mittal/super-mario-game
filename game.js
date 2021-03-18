@@ -31,9 +31,10 @@ const render = {
         this.drawEntity(camera, mario, gameObj);
         gameObj.entities.goombas.forEach((goomba) => {
             this.drawEntity(camera, goomba, gameObj);
-
         })
-
+        gameObj.entities.koopas.forEach((koopa) => {
+            this.drawEntity(camera, koopa, gameObj);
+        })
 
     },
 
@@ -42,9 +43,9 @@ const render = {
         let frameWidth = camera.start + camera.width;
         if (entity.posX >= camera.start && entityEnd <= frameWidth) {
             gameObj.tool.drawImage(
-                entity.sprite.img
-                , entity.sprite.srcX
-                , entity.sprite.srcY,
+                entity.sprite.img,
+                entity.sprite.srcX,
+                entity.sprite.srcY,
                 entity.sprite.srcW,
                 entity.sprite.srcH,
                 entity.posX - camera.start,
@@ -82,20 +83,25 @@ class Game {
                 }
                 let gameObj = {
                     tool, canvas,
-                    entities
-                    , animFrame: 0,
+                    entities,
+                    animFrame: 0,
                     levelBuilder: new LevelBuilder(levelOne),
-                    camera
-                    , reset: this.reset
+                    camera,
+                    reset: this.reset
 
                 }
                 tool.scale(2.74, 2.74);
                 let mario = new Mario(spriteSheetImage, 175, 0, 18, 18);
                 gameObj.entities.mario = mario;
                 gameObj.entities.goombas = [];
+                gameObj.entities.koopas = [];
                 levelOne.goombas.forEach((gCord) => {
                     gameObj.entities.goombas.push(new Goomba(spriteSheetImage, gCord[0], gCord[1], gCord[2], gCord[3]));
-
+     
+                })
+                levelOne.koopas.forEach((kCord) => {
+                    gameObj.entities.koopas.push(new Koopa(spriteSheetImage, kCord[0], kCord[1], kCord[2], kCord[3]));
+     
                 })
         
                 gameObj.entities.scenery = [];
