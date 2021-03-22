@@ -31,6 +31,7 @@ class Mario extends Entity {
       standLeft: new Sprite(spritesheet, 860, 21, 16, 16),
       jumpRight: new Sprite(spritesheet, 731, 5, 16, 16),
       jumpLeft: new Sprite(spritesheet, 778, 22, 16, 16),
+      dead: new Sprite(spritesheet, 748, 5, 16, 16),
     }
     this.states = {
       walkingAnim(gameObj) {
@@ -66,11 +67,12 @@ class Mario extends Entity {
       jumpingAnim() {
         if (self.currentDirection == "left") {
           self.sprite = self.animFrame.jumpLeft;
-          
-        } else {
-          
+        } else {   
           self.sprite = self.animFrame.jumpRight;
         }
+      }, 
+      dead(){
+        self.sprite = self.animFrame.dead;
       }
     }
     this.currentDirection ="right";
