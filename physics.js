@@ -39,7 +39,6 @@ let physics = {
             }
         })
     },
-
     handleCollision(mario, entity, gameObj) {
         if (entity.type == "goomba" || entity.type == "koopa") {
             // console.log("left");
