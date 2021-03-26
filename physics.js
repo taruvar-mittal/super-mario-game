@@ -7,6 +7,9 @@ let physics = {
         gameObj.entities.koopas.forEach((koopa)=>{
             this.gravity(koopa);
         })
+        gameObj.entities.particles.forEach((particle) => {
+            this.gravity(particle);
+        })
         this.entityMarioCol(gameObj);
         this.bgEntityCollision(gameObj);
         this.marioFallingCheck(gameObj);
@@ -18,7 +21,7 @@ let physics = {
     },
 
     entityMarioCol(gameObj){
-        let {goombas, koopas, mario, bricks} = gameObj.entities;
+        let {goombas, koopas, mario, bricks, blocks} = gameObj.entities;
         goombas.forEach((goomba) => {
            if(this.checkRectCollision(goomba, mario)) {
               this.handleCollision(mario,goomba, gameObj);
@@ -33,9 +36,18 @@ let physics = {
             if (this.checkRectCollision(brick, mario)) {
                let wantToBreak = this.handleDirec(brick, mario);
                if(wantToBreak){
+                brick.createParticles(gameObj);
                 let idx = gameObj.entities.bricks.indexOf(brick);
                 gameObj.entities.bricks.splice(idx,1);
                }
+            }
+        })
+        blocks.forEach((block) => {
+            if (this.checkRectCollision(block, mario)) {
+                let wantToReveal = this.handleDirec(block, mario);
+                if (wantToReveal) {
+                    block.currentState = block.states.emptyAnim;
+                }
             }
         })
     },
@@ -83,6 +95,7 @@ let physics = {
                 }
             }
         }
+
     },
 
     enemyDeath(gameObj, entity, mario) {
@@ -178,7 +191,7 @@ let physics = {
     handleDirec(scene, entity) {
 
         if(entity.posY > scene.posY && entity.posX + entity.width > scene.posX && scene.posX + scene.posY > entity.posX && entity.velY < 0){
-           if(scene.type == "brick"){
+           if(scene.type == "brick" || scene.type=="block"){
             entity.posY = scene.posY + scene.height;
             entity.velY = 1.1;
             return true;

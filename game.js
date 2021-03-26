@@ -36,6 +36,9 @@ const render = {
         gameObj.entities.koopas.forEach((koopa) => {
             this.drawEntity(camera, koopa, gameObj);
         })
+        gameObj.entities.particles.forEach((particle) => {
+            this.drawEntity(camera, particle, gameObj);
+        })
 
     },
 
@@ -97,6 +100,8 @@ class Game {
                 gameObj.entities.goombas = [];
                 gameObj.entities.koopas = [];
                 gameObj.entities.bricks = [];
+                gameObj.entities.particles = [];
+                gameObj.entities.blocks = [];
                 levelOne.goombas.forEach((gCord) => {
                     gameObj.entities.goombas.push(new Goomba(spriteSheetImage, gCord[0], gCord[1], gCord[2], gCord[3]));
      
@@ -105,6 +110,7 @@ class Game {
                     gameObj.entities.koopas.push(new Koopa(spriteSheetImage, kCord[0], kCord[1], kCord[2], kCord[3]));
      
                 })
+                
         
                 gameObj.entities.scenery = [];
                 render.init(gameObj);

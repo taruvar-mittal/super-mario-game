@@ -3,6 +3,7 @@ class LevelBuilder {
   constructor(level) {
     this.sceneryEntities = [];
     this.bricks = [];
+    this.blocks = [];
     level.ground.forEach((gCord) => {
       this.sceneryEntities.push(
         new Ground(tilesetImage, gCord[0], gCord[1], gCord[2], gCord[3])
@@ -52,6 +53,12 @@ class LevelBuilder {
       this.bricks.push(new Brick(tilesetImage, brick[0], brick[1], brick[2], brick[3]));
     })
    
+    level.coins.forEach((coin) => {
+      this.blocks.push(new Block("coin", tilesetImage, coin[0], coin[1], coin[2], coin[3]))
+    })
+    level.mushrooms.forEach((mushroom) => {
+      this.blocks.push(new Block("mushroom", tilesetImage, mushroom[0], mushroom[1], mushroom[2], mushroom[3]))
+    })
     
 
     
@@ -76,6 +83,9 @@ class LevelBuilder {
     this.bricks.forEach((entity) => {
       gameObj.entities.bricks.push(entity);
     })
+    this.blocks.forEach((block) => {
+      gameObj.entities.blocks.push(block);
+    })
   }
   render(gameObj) {
     let camera = gameObj.camera;
@@ -84,6 +94,9 @@ class LevelBuilder {
     })
     gameObj.entities.bricks.forEach((brick) => {
       this.drawEntity(brick, camera, gameObj);
+    })
+    gameObj.entities.blocks.forEach((block) => {
+      this.drawEntity(block, camera, gameObj);
     })
   }
   
