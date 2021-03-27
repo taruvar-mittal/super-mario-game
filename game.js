@@ -42,7 +42,9 @@ const render = {
         gameObj.entities.coins.forEach((coin) => {
             this.drawEntity(camera, coin, gameObj);
         })
-
+        gameObj.entities.mushrooms.forEach((mushroom) => {
+            this.drawEntity(camera, mushroom, gameObj);
+        })
     },
 
     drawEntity(camera, entity, gameObj) {
@@ -106,6 +108,7 @@ class Game {
                 gameObj.entities.particles = [];
                 gameObj.entities.blocks = [];
                 gameObj.entities.coins = [];
+                gameObj.entities.mushrooms = [];
                 levelOne.goombas.forEach((gCord) => {
                     gameObj.entities.goombas.push(new Goomba(spriteSheetImage, gCord[0], gCord[1], gCord[2], gCord[3]));
      
