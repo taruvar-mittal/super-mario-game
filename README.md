@@ -1,4 +1,4 @@
-<b>Super Mario Game<b> - A clone of the classic mario game.
+<b>Super Mario Game</b> - A clone of the classic mario game.
 <br>
 Created using html, css and javascript.
 <br>
